@@ -17,6 +17,7 @@
   },
   "scripts": {
     "format": "prettier --write .",
+    "build": "zx ./scripts/build.mjs",
     "test:unit": "vitest"
   },
   "repository": {

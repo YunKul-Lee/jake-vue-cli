@@ -12,7 +12,7 @@ import * as banners from './utils/banners'
 
 import renderTemplate from './utils/renderTemplate'
 import { postOrderDirectoryTraverse, preOrderDirectoryTraverse } from './utils/directoryTraverse'
-import getMessages from './utils/getMessages'
+// import getMessages from './utils/getMessages'
 
 function isValidPackageName(projectName) {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName)
@@ -102,7 +102,74 @@ async function init() {
 
   const forceOverwrite = argv.force
 
-  const messages = getMessages()
+  const messages = {
+    "projectName": {
+      "message": "Project name:"
+    },
+    "shouldOverwrite": {
+      "dirForPrompts": {
+        "current": "Current directory",
+        "target": "Target directory"
+      },
+      "message": "is not empty. Remove existing files and continue?"
+    },
+    "packageName": {
+      "message": "Package name:",
+      "invalidMessage": "Invalid package.json name"
+    },
+    "needsTypeScript": {
+      "message": "Add TypeScript?"
+    },
+    "needsJsx": {
+      "message": "Add JSX Support?"
+    },
+    "needsRouter": {
+      "message": "Add Vue Router for Single Page Application development?"
+    },
+    "needsPinia": {
+      "message": "Add Pinia for state management?"
+    },
+    "needsVitest": {
+      "message": "Add Vitest for Unit Testing?"
+    },
+    "needsE2eTesting": {
+      "message": "Add an End-to-End Testing Solution?",
+      "hint": "- Use arrow-keys. Return to submit.",
+      "selectOptions": {
+        "negative": { "title": "No" },
+        "cypress": {
+          "title": "Cypress",
+          "desc": "also supports unit testing with Cypress Component Testing"
+        },
+        "nightwatch": {
+          "title": "Nightwatch",
+          "desc": "also supports unit testing with Nightwatch Component Testing"
+        },
+        "playwright": { "title": "Playwright" }
+      }
+    },
+    "needsEslint": {
+      "message": "Add ESLint for code quality?"
+    },
+    "needsPrettier": {
+      "message": "Add Prettier for code formatting?"
+    },
+    "needsDevTools": {
+      "message": "Add Vue DevTools 7 extension for debugging? (experimental)"
+    },
+    "errors": {
+      "operationCancelled": "Operation cancelled"
+    },
+    "defaultToggleOptions": {
+      "active": "Yes",
+      "inactive": "No"
+    },
+    "infos": {
+      "scaffolding": "Scaffolding project in",
+      "done": "Done. Now run:"
+    }
+  }
+
 
   // 선택결과
   let result: {
