@@ -254,10 +254,13 @@ async function init() {
 
   // Render base template
   render('base')
+
+  // Add configs.
   render('config/router')
   render('config/pinia')
-  // render('config/vitest')
 
+  // Render entry file (main.js).
+  render('entry')
 }
 
 init().catch((e) => {
