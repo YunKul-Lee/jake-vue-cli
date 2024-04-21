@@ -8,11 +8,14 @@ import { parseArgs } from 'node:util'
 import prompts from 'prompts'
 import { red, green, bold } from 'kolorist'
 
+import ejs from 'ejs'
+
 import * as banners from './utils/banners'
 
 import renderTemplate from './utils/renderTemplate'
 import { postOrderDirectoryTraverse, preOrderDirectoryTraverse } from './utils/directoryTraverse'
-// import getMessages from './utils/getMessages'
+import generateReadme from './utils/generateReadme'
+import getCommand from './utils/getCommand'
 
 function isValidPackageName(projectName) {
   return /^(?:@[a-z0-9-*~][a-z0-9-*._~]*\/)?[a-z0-9-~][a-z0-9-._~]*$/.test(projectName)
@@ -259,8 +262,66 @@ async function init() {
   render('config/router')
   render('config/pinia')
 
+  // Render code template
+  render('code')
+
   // Render entry file (main.js).
   render('entry')
+
+  // An external data store for callbacks to share data
+  const dataStore = {}
+  // Process callbacks
+  for (const cb of callbacks) {
+    await cb(dataStore)
+  }
+
+  // EJS template rendering
+  preOrderDirectoryTraverse(
+    root,
+    () => {},
+    (filepath) => {
+      if (filepath.endsWith('.ejs')) {
+        const template = fs.readFileSync(filepath, 'utf-8')
+        const dest = filepath.replace(/\.ejs$/, '')
+        const content = ejs.render(template, dataStore[dest])
+
+        fs.writeFileSync(dest, content)
+        fs.unlinkSync(filepath)
+      }
+    }
+  )
+
+  // Cleanup.
+  // Remove all the remaining `.ts` files
+  preOrderDirectoryTraverse(
+    root,
+    () => {},
+    (filepath) => {
+      if (filepath.endsWith('.ts')) {
+        fs.unlinkSync(filepath)
+      }
+    }
+  )
+
+  const userAgent = process.env.npm_config_user_agent ?? ''
+  const packageManager = 'pnpm'
+
+  // TODO :: README generation
+  // fs.writeFileSync(
+  //   path.resolve(root, 'README.md'),
+  //   generateReadme({
+  //     projectName: result.projectName ?? result.packageName ?? defaultProjectName,
+  //     packageManager,
+  //     needsTypeScript,
+  //     needsVitest,
+  //     needsCypress,
+  //     needsNightwatch,
+  //     needsPlaywright,
+  //     needsNightwatchCT,
+  //     needsCypressCT,
+  //     needsEslint
+  //   })
+  // )
 }
 
 init().catch((e) => {
