@@ -18,12 +18,12 @@
   "scripts": {
     "format": "prettier --write .",
     "build": "zx ./scripts/build.mjs",
-    "test:unit": "vitest"
+    "test:unit": "vitest",
+    "lint": "eslint . --ext .vue,.js,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YunKul-Lee/jake-vue-cli.git",
-    "lint": "eslint . --ext .vue,.js,.cjs,.mjs --fix --ignore-path .gitignore"
+    "url": "git+https://github.com/YunKul-Lee/jake-vue-cli.git"
   },
   "keywords": [],
   "author": "Jake",
