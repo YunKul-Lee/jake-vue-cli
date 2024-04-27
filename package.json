@@ -22,7 +22,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/YunKul-Lee/jake-vue-cli.git"
+    "url": "git+https://github.com/YunKul-Lee/jake-vue-cli.git",
+    "lint": "eslint . --ext .vue,.js,.cjs,.mjs --fix --ignore-path .gitignore"
   },
   "keywords": [],
   "author": "Jake",
@@ -41,10 +42,15 @@
     "kolorist": "^1.8.0",
     "lint-staged": "^15.2.2",
     "npm-run-all2": "^6.1.2",
-    "prettier": "^3.2.5",
     "prompts": "^2.4.2",
     "vitest": "^1.5.0",
-    "zx": "^8.0.2"
+    "zx": "^8.0.2",
+
+    "@vue/eslint-config-prettier": "^9.0.0",
+    "eslint": "^8.5.0",
+    "eslint-plugin-vue": "^9.25.0",
+    "prettier": "3.2.5"
+
   },
   "lint-staged": {
     "*.{js,ts,vue,json}": [
